@@ -1,0 +1,41 @@
+{% extends 'uploader/layout.html' %}
+{% load bootstrap4 %}
+{% block page_title %}
+    Upload a File
+{% endblock %}
+{% block page_heading %}
+    Upload
+{% endblock %}
+{% block page_breadcrump %}
+    <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item"><a href="{% url 'my_files' %}"> My Files</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Upload</li>
+    </ol>
+{% endblock %}
+
+{% block page_content %}
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">Upload a file</h3>
+                    </div>
+                    <form method="post" enctype="multipart/form-data" class="card-body"
+                          action="{% url 'upload_file' %}">
+                        {% csrf_token %}
+                        {% bootstrap_field form.description label_class='form-control-label' %}
+                        {% bootstrap_field form.file label_class='form-control-label' %}
+                        <button type="submit" class="btn btn-primary my-4">Upload</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+{% endblock %}

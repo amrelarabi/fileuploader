@@ -1,0 +1,147 @@
+{% extends 'uploader/layout.html' %}
+{% load static %}
+{% block page_title %}
+    My Files
+{% endblock %}
+{% block page_heading %}
+    My Files
+{% endblock %}
+{% block page_breadcrump %}
+    <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item active"><a href="{% url 'my_files' %}"> My Files</a></li>
+    </ol>
+{% endblock %}
+{% block page_buttons %}
+    <a href="{% url 'upload_file' %}" class="btn btn-sm btn-neutral">Upload File</a>
+{% endblock %}
+{% block page_content %}
+    <!-- Page content -->
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <!-- Card header -->
+                    <div class="card-header border-0">
+                        <h3 class="mb-0">My files</h3>
+                    </div>
+                    <div class="card-body">
+                        {% if object_list %}
+                            <!-- Light table -->
+                            <div class="table-responsive">
+                                <table class="table align-items-center table-flush">
+                                    <thead class="thead-light">
+                                    <tr>
+                                        <th scope="col" class="sort" data-sort="name">ID</th>
+                                        <th scope="col">Description</th>
+                                        <th scope="col">Upload Date</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="list">
+                                    {% for file in object_list %}
+                                        <tr>
+                                            <td>
+                                                {{ forloop.counter }}
+                                            </td>
+                                            <td>
+                                                {{ file.description }}
+                                            </td>
+                                            <td>
+                                                {{ file.uploaded_at }}
+                                            </td>
+                                            <td>
+                                                <div class="row">
+                                                    <div class="col-4">
+                                                        <button type="button" class="btn-icon-clipboard"
+                                                                data-clipboard-text="{{ file.file.url }}" title=""
+                                                                data-original-title="Copy to clipboard">
+                                                            <div>
+                                                                <i class="ni ni-ungroup"></i>
+                                                                <span>Copy Link</span>
+                                                            </div>
+                                                        </button>
+                                                    </div>
+                                                    <div class="col-4">
+
+                                                        <a href="{% url 'download_file' file.id %}"
+                                                           class="btn-icon-clipboard">
+                                                            <div>
+                                                                <i class="ni ni-cloud-download-95"></i>
+                                                                <span>Download</span>
+                                                            </div>
+                                                        </a>
+                                                    </div>
+                                                    <div class="col-4">
+
+
+                                                        <button data-toggle="modal"
+                                                                data-target="#delete_file_{{ file.id }}"
+                                                                class="btn-icon-clipboard">
+                                                            <div>
+                                                                <i class="ni ni-fat-remove"></i>
+                                                                <span>Delete</span>
+                                                            </div>
+                                                        </button>
+
+
+                                                        <!-- Modal -->
+                                                        <div class="modal fade" id="delete_file_{{ file.id }}"
+                                                             tabindex="-1"
+                                                             role="dialog" aria-labelledby="exampleModalLabel"
+                                                             aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h5 class="modal-title" id="exampleModalLabel">
+                                                                            Modal title</h5>
+                                                                        <button type="button" class="close"
+                                                                                data-dismiss="modal" aria-label="Close">
+                                                                            <span aria-hidden="true">&times;</span>
+                                                                        </button>
+                                                                    </div>
+                                                                    <div class="modal-body">
+                                                                        Are yor sure you want to delete this file?
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                                data-dismiss="modal">Close
+                                                                        </button>
+
+
+                                                                        <a href="{% url 'delete_file' file.id %}"
+                                                                           class="btn btn-primary">
+                                                                            <div>
+                                                                                <span>Delete</span>
+                                                                            </div>
+                                                                        </a>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+
+                            </div>
+                        {% else %}
+                            <div class="alert alert-warning">
+                                No files to display
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block footer_scripts %}
+    <script src="{% static 'uploader/assets/vendor/clipboard/dist/clipboard.min.js' %}"></script>
+{% endblock %}

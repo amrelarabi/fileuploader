@@ -1,0 +1,75 @@
+{% extends 'uploader/layout.html' %}
+{% load static %}
+{% load bootstrap4 %}
+
+{% block page_title %}
+    Edit account
+{% endblock %}
+{% block page_heading %}
+    Edit account
+{% endblock %}
+{% block page_breadcrump %}
+    <ol class="breadcrumb breadcrumb-links breadcrumb-dark">
+        <li class="breadcrumb-item"><a href="{% url 'dashboard' %}"><i class="fas fa-home"></i></a></li>
+        <li class="breadcrumb-item active"><a href="{% url 'my_files' %}"> My Account</a></li>
+    </ol>
+{% endblock %}
+
+{% block page_content %}
+    <div class="container-fluid mt--6">
+        <div class="row">
+            <div class="col-xl-4 order-xl-2">
+                <div class="card card-profile">
+                    {% if request.user.avatar %}
+                    <img src="{{ request.user.avatar.url }}" alt="Image placeholder"
+                         class="card-img-top">
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-xl-8 order-xl-1">
+                <form action="{% url 'edit_account' %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="row align-items-center">
+                                <div class="col-8">
+                                    <h3 class="mb-0">Edit account </h3>
+                                </div>
+                                <div class="col-4 text-right">
+                                    <button type="submit" class="btn btn-md btn-primary">Save</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h6 class="heading-small text-muted mb-4">User information</h6>
+                            {% bootstrap_form_errors form %}
+                            <div class="pl-lg-4">
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        {% bootstrap_field form.first_name label_class='form-control-label' %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% bootstrap_field form.last_name label_class='form-control-label' %}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        {% bootstrap_field form.email label_class='form-control-label' %}
+                                    </div>
+                                    <div class="col-lg-6">
+                                        {% bootstrap_field form.avatar label_class='form-control-label' %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+{% block footer_scripts %}
+    <script src="{% static 'uploader/assets/vendor/clipboard/dist/clipboard.min.js' %}"></script>
+{% endblock %}
